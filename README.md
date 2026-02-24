@@ -50,7 +50,7 @@ AutomationAgent	Generates Selenium Java framework code
 ##Python 3.11+
 
 # Project Structure
-AI_QA_PLATFORM/
+'''AI_QA_PLATFORM/
 │
 ├── app/
 │   ├── main.py
@@ -64,19 +64,21 @@ AI_QA_PLATFORM/
 ├── requirements.txt
 ├── startup.txt
 └── README.md
-# Setup Instructions (Local Development)
-1️⃣ Clone or Extract Project
+'''
+
+## Setup Instructions (Local Development)
+1. Clone or Extract Project
 
 Navigate to project folder:
 
 cd AI_QA_PLATFORM
-2️⃣ Create Virtual Environment
+2. Create Virtual Environment
 python -m venv venv
 venv\Scripts\activate  # Windows
-# source venv/bin/activate  # Mac/Linux
-3️⃣ Install Dependencies
+## source venv/bin/activate  # Mac/Linux
+3. Install Dependencies
 pip install -r requirements.txt
-4️⃣ Create .env File
+4. Create .env File
 
 Create a file in project root:
 .env
@@ -86,7 +88,7 @@ AZURE_ORG_URL=https://your-azure-url
 AZURE_PROJECT=YourProject
 AZURE_PAT=YourPersonalAccessToken
 OPENAI_API_KEY=your_openai_key
-5️⃣ Run Application
+5. Run Application
 uvicorn app.main:app --reload
 
 Open in browser:
