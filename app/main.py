@@ -10,7 +10,7 @@ from app.agents.automation_agent import AutomationAgent
 from app.services.azure_devops_service import AzureDevOpsService
 from app.settings import AVAILABLE_MODELS
 
-app = FastAPI(title="Enterprise AI QA Platform")
+app = FastAPI(title="Enterprise AI QA Platform by Amit")
 templates = Jinja2Templates(directory="app/templates")
 logger = get_logger()
 
