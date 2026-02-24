@@ -1,0 +1,7 @@
+- Open terminal at the project dir
+- python -m venv venv
+- venv\Scripts\activate
+- pip install -r requirements.txt (do once)
+- python -m uvicorn app.main:app --reload
+
+- Browse http://127.0.0.1:8000/

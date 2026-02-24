@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enterprise AI QA Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-4">
+
+<h2>CGI - Enterprise AI QA Platform</h2>
+
+<form id="generateForm" method="post" action="/generate">
+
+    <div class="mb-3">
+        <label>IIS - Azure DevOps Work Item ID</label>
+        <input type="text" name="work_item_id" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label>Select Model</label>
+        <select name="model" class="form-control">
+            <option value="gpt-4o-mini">gpt-4o-mini</option>
+            <option value="gpt-4o">gpt-4o</option>
+            <option value="gpt-4.1-mini">gpt-4.1-mini</option>
+            <option value="gpt-4.1">gpt-4.1</option>
+            <option value="o3-mini">o3-mini</option>
+        </select>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button id="generateBtn" type="submit" class="btn btn-primary">
+            Generate
+        </button>
+        <a href="/" class="btn btn-outline-secondary">Clear</a>
+    </div>
+
+    <!-- Spinner -->
+    <div id="loadingSpinner" class="mt-3" style="display:none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        Generating AI Output...
+    </div>
+</form>
+
+{% if test_cases or automation %}
+
+<hr>
+
+<!-- Tabs -->
+<ul class="nav nav-tabs" id="resultTabs" role="tablist">
+    <li class="nav-item">
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#testcases">
+            Test Cases
+        </button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#automation">
+            Automation Code
+        </button>
+    </li>
+</ul>
+
+<div class="tab-content mt-3">
+
+    <!-- Test Cases Tab -->
+    <div class="tab-pane fade show active" id="testcases">
+
+        <button class="btn btn-sm btn-outline-success mb-2"
+                onclick="downloadFile('testcases.txt', `{{ test_cases|safe }}`)">
+            Download Test Cases
+        </button>
+
+        <div class="accordion" id="testCaseAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseTestCases">
+                        View Generated Test Cases
+                    </button>
+                </h2>
+                <div id="collapseTestCases" class="accordion-collapse collapse show">
+                    <div class="accordion-body">
+                        <pre style="white-space: pre-wrap;">{{ test_cases }}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Automation Tab -->
+    <div class="tab-pane fade" id="automation">
+
+        <button class="btn btn-sm btn-outline-success mb-2"
+                onclick="downloadFile('automation.java', `{{ automation|safe }}`)">
+            Download Automation Code
+        </button>
+
+        <div class="accordion" id="automationAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseAutomation">
+                        View Generated Automation Code
+                    </button>
+                </h2>
+                <div id="collapseAutomation" class="accordion-collapse collapse show">
+                    <div class="accordion-body">
+                        <pre style="white-space: pre-wrap;">{{ automation }}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Toast -->
+<div class="position-fixed bottom-0 end-0 p-3">
+    <div id="successToast" class="toast text-bg-success border-0">
+        <div class="d-flex">
+            <div class="toast-body">
+                AI generation completed successfully!
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                    data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+const form = document.getElementById("generateForm");
+const spinner = document.getElementById("loadingSpinner");
+const button = document.getElementById("generateBtn");
+
+if(form){
+    form.addEventListener("submit", function(){
+        spinner.style.display = "block";
+        button.disabled = true;
+        button.innerText = "Generating...";
+    });
+}
+
+window.onload = function() {
+    {% if test_cases or automation %}
+        var toast = new bootstrap.Toast(document.getElementById('successToast'));
+        toast.show();
+    {% endif %}
+};
+
+function downloadFile(filename, content) {
+    const blob = new Blob([content], { type: 'text/plain' });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+}
+</script>
+
+</body>
+</html>
